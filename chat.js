@@ -1,38 +1,24 @@
+//import EventEmitter from 'events'
 const EventEmitter = require('events');
 
 class ChatApp extends EventEmitter {
   /**
    * @param {String} title
    */
-  constructor(title) {
-    super();
+    constructor(title) {
+        super();
+        this.title = title;
 
-    this.title = title;
+        setInterval(() => {
+            this.emit('message', `${this.title}: ping-pong`);
+        }, 1000);
+    }
 
-    setInterval(() => {
-      this.emit('message', `${this.title}: ping-pong`);
-  }, 1000);
-  }
+    // 2.1
+    close() {
+        this.emit('close');
+    }
 }
 
-let webinarChat =  new ChatApp('webinar');
-let facebookChat = new ChatApp('=========facebook');
-let vkChat =       new ChatApp('---------vk');
+module.exports = { ChatApp }
 
-let chatOnMessage = (message) => {
-  console.log(message);
-};
-
-webinarChat.on('message', chatOnMessage);
-facebookChat.on('message', chatOnMessage);
-vkChat.on('message', chatOnMessage);
-
-setTimeout( ()=> {
-  console.log('Р—Р°РєСЂС‹РІР°СЋ РІРєРѕРЅС‚Р°РєС‚Рµ...');
-vkChat.removeListener('message', chatOnMessage);
-}, 10000 );
-
-setTimeout( ()=> {
-  console.log('Р—Р°РєСЂС‹РІР°СЋ С„РµР№СЃР±СѓРє, РІСЃРµ РІРЅРёРјР°РЅРёРµ вЂ” РІРµР±РёРЅР°СЂСѓ!');
-facebookChat.removeListener('message', chatOnMessage);
-}, 15000 );
